@@ -1,4 +1,4 @@
-package com.clindata.inc.rxcui;
+package com.clindata.rxcui;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -9,11 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+//import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -24,7 +21,7 @@ public class RxCUIMapping {
 	
 	private final static String FILENAME = "/Drug_Master.csv";
 	private final static String RESULT_FILE = "RxCUI.csv";
-	private final static String QUERY_URL = "https://rxnav.nlm.nih.gov/REST/rxcui?"; 
+	private final static String QUERY_URL = "https://rxnav.nlm.nih.gov/REST/rxcui.json?";
 	
 	private static String getRxCUI(String type, String number) throws Exception {
 		StringBuffer response = new StringBuffer();
@@ -32,25 +29,41 @@ public class RxCUIMapping {
 		HttpURLConnection con  = (HttpURLConnection) queryURL.openConnection();
 		con.setRequestMethod("GET");
 		int responseCode = con.getResponseCode();
-		if(responseCode == 200) {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document doc = builder.parse(con.getInputStream());
-			NodeList list = doc.getElementsByTagName("rxnormId");
-			if(list.getLength() > 0) {
-				response.append(list.item(0).getTextContent());				
-			}
-		} else {
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			String line;
-			while ((line = in.readLine()) != null) {
-				response.append(line);
-			}
-			in.close();			
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		String line;
+		while ((line = in.readLine()) != null) {
+			response.append(line);
 		}
-		return response.toString();
+		in.close();
+		String rxcui = "";
+		if(responseCode == 200) {
+			JSONObject jo = new JSONObject(response.toString());
+			if(jo.has("rxnormId")) {
+				rxcui = (String) jo.getJSONArray("rxnormId").get(0);				
+			}
+		}
+		return rxcui;
 	}
 	
+//	private static String findRxCUIByName(String name) throws Exception {
+//		StringBuffer response = new StringBuffer();
+//		URL queryURL = new URL(QUERY_URL + "name="+name);
+//		HttpURLConnection con  = (HttpURLConnection) queryURL.openConnection();
+//		con.setRequestMethod("GET");
+//		int responseCode = con.getResponseCode();
+//		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+//		String line;
+//		while ((line = in.readLine()) != null) {
+//			response.append(line);
+//		}
+//		in.close();
+//		
+//		if(responseCode == 200) {
+//			JSONObject jo = new JSONObject(response.toString());
+//			JSONArray rxcuis = jo.getJSONArray("rxnormId");
+//		}
+//		return null;
+//	}
 
 	public static void main(String[] args) {
 		CSVReader reader = null;
@@ -69,7 +82,10 @@ public class RxCUIMapping {
 				} else if("N".equals(applType)) {
 					queryType = "NDA";
 				}
-				line[13] = getRxCUI(queryType, queryType+applNo);
+				String rxcui = getRxCUI(queryType, queryType+applNo);
+				if(!"".equals(rxcui)) {
+					line[13] = rxcui;
+				}
 				writer.writeNext(line);
 			}
 		}catch(Exception e) {
