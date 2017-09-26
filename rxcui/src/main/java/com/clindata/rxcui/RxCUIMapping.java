@@ -73,8 +73,12 @@ public class RxCUIMapping {
 				JSONObject idJo = jo.getJSONObject("idGroup");
 				if(idJo.has("rxnormId")) {
 					JSONArray ja = idJo.getJSONArray("rxnormId");
-					for(int i = 0; i < ja.length(); i++) {
-						rxcui += ja.getString(i) + ",";
+					if(ja.length() == 1) {
+						rxcui = ja.getString(0);
+					} else {
+						for(int i = 0; i < ja.length(); i++) {
+							rxcui += ja.getString(i) + ";";
+						}						
 					}
 					rxcui = rxcui.substring(0, rxcui.length()-1);
 				}	
