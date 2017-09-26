@@ -10,7 +10,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 //import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.*;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -20,12 +20,13 @@ import com.opencsv.CSVWriter;
 public class RxCUIMapping {
 	
 	private final static String FILENAME = "/Drug_Master.csv";
+//	private final static String FILENAME = "/test.csv";
 	private final static String RESULT_FILE = "RxCUI.csv";
 	private final static String QUERY_URL = "https://rxnav.nlm.nih.gov/REST/rxcui.json?";
 	
 	private static String getRxCUI(String type, String number) throws Exception {
 		StringBuffer response = new StringBuffer();
-		URL queryURL = new URL(QUERY_URL + "idtype=" + type + "&id=" + number);
+		URL queryURL = new URL(QUERY_URL + "idtype=" + type + "&id=" + number+"&allsrc=1");
 		HttpURLConnection con  = (HttpURLConnection) queryURL.openConnection();
 		con.setRequestMethod("GET");
 		int responseCode = con.getResponseCode();
@@ -38,8 +39,12 @@ public class RxCUIMapping {
 		String rxcui = "";
 		if(responseCode == 200) {
 			JSONObject jo = new JSONObject(response.toString());
-			if(jo.has("rxnormId")) {
-				rxcui = (String) jo.getJSONArray("rxnormId").get(0);				
+			if(jo.has("idGroup")) {
+				JSONObject idJo = jo.getJSONObject("idGroup");
+				if(idJo.has("rxnormId")) {
+					rxcui = idJo.getJSONArray("rxnormId").toString();
+					return rxcui.substring(1, rxcui.length()-1);
+				}	
 			}
 		}
 		return rxcui;
@@ -69,7 +74,7 @@ public class RxCUIMapping {
 		CSVReader reader = null;
 		CSVWriter writer = null;
 		try{
-			InputStream is = RxCUIMapping.class.getResourceAsStream(FILENAME);			
+			InputStream is = RxCUIMapping.class.getResourceAsStream(FILENAME);
 			reader = new CSVReader(new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)));
 			String[] line;
 			writer = new CSVWriter(new FileWriter(RESULT_FILE));
