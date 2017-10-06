@@ -632,3 +632,11 @@
 2017-10-05 23:02:23,521 [Worker-36] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 3 resources
 2017-10-05 23:02:23,523 [Worker-36] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2017-10-05 23:02:23,523 [Worker-36] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/jamiediner/Documents/CMU/Fall 2017/Capstone Project/RxCUI/RxCUI-Mapping/rxcui/src/test/resources
+2017-10-06 11:14:14,801 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-06 11:14:14,870 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 3 resources
+2017-10-06 11:14:14,882 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-06 11:14:14,883 [Worker-13] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/jamiediner/Documents/CMU/Fall 2017/Capstone Project/RxCUI/RxCUI-Mapping/rxcui/src/test/resources
+2017-10-06 11:58:58,643 [Worker-20] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-06 11:58:58,745 [Worker-20] INFO  o.e.m.c.i.embedder.EclipseLogger - Copying 3 resources
+2017-10-06 11:58:58,749 [Worker-20] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2017-10-06 11:58:58,749 [Worker-20] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory /Users/jamiediner/Documents/CMU/Fall 2017/Capstone Project/RxCUI/RxCUI-Mapping/rxcui/src/test/resources

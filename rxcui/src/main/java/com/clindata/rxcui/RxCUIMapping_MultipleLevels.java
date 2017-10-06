@@ -84,7 +84,8 @@ public class RxCUIMapping_MultipleLevels {
 				}	
 			}
 		}
-		drugIDMap.put(name, rxcui);
+		if(!"".equals(rxcui)){
+		drugIDMap.put(name, rxcui);}
 		return rxcui;
 	}
 
@@ -154,6 +155,8 @@ public class RxCUIMapping_MultipleLevels {
 												rxcui = findRxCUIByName(line[19]);
 												if(!"".equals(rxcui)) {
 													line[20] = rxcui;
+												}else{
+													line[20] = "";
 												}
 											}
 										}
