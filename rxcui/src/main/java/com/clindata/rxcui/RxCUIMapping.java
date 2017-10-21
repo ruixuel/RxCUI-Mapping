@@ -80,7 +80,7 @@ public class RxCUIMapping {
 							rxcui += ja.getString(i) + ";";
 						}						
 					}
-					rxcui = rxcui.substring(0, rxcui.length()-1);
+					rxcui = rxcui.substring(0, rxcui.length());
 				}	
 			}
 		}

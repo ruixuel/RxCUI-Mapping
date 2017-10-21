@@ -80,7 +80,6 @@ public class RxCUIMapping_MultipleLevels {
 							rxcui += ja.getString(i) + ";";
 						}						
 					}
-					rxcui = rxcui.substring(0, rxcui.length()-1);
 				}	
 			}
 		}
